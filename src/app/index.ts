@@ -245,9 +245,9 @@ class PDBeMolstarPlugin {
 
     async createLigandStructure(isBranched: boolean) {
         if(this.assemblyRef === '') return;
-        for await (const comp of this.plugin.managers.structure.hierarchy.currentComponentGroups) {
-            await PluginCommands.State.RemoveObject(this.plugin, { state: comp[0].cell.parent!, ref: comp[0].cell.transform.ref, removeParentGhosts: true });
-        }
+        //for await (const comp of this.plugin.managers.structure.hierarchy.currentComponentGroups) {
+        //    await PluginCommands.State.RemoveObject(this.plugin, { state: comp[0].cell.parent!, ref: comp[0].cell.transform.ref, removeParentGhosts: true });
+        //}
         
         const structure = this.state.select(this.assemblyRef)[0];
 
@@ -306,8 +306,19 @@ class PDBeMolstarPlugin {
             }
 
         } else {
-            const model = await this.plugin.builders.structure.createModel(trajectory);
-            await this.plugin.builders.structure.createStructure(model, { name: 'model', params: { } });
+
+            await this.plugin.builders.structure.hierarchy.applyPreset(trajectory, 'default', {
+                structure: assemblyId ? (assemblyId === 'preferred') ? void 0 : { name: 'assembly', params: { id: assemblyId } } : { name: 'model', params: { } },
+                showUnitcell: false,
+                representationPreset: 'auto'
+            });
+
+            if(this.initParams.hideStructure || this.initParams.visualStyle){
+                this.applyVisualParams();
+		}
+
+            // const model = await this.plugin.builders.structure.createModel(trajectory);
+            // await this.plugin.builders.structure.createStructure(model, { name: 'model', params: { } });
         }
 
         // show selection if param is set

@@ -107,7 +107,7 @@ export namespace LigandView {
             ]);
         
         // Construct surroundings query
-        const surroundings = MS.struct.modifier.includeSurroundings({ 0: core, radius: rad, 'as-whole-residues': false });
+        const surroundings = MS.struct.modifier.includeSurroundings({ 0: core, radius: rad, 'as-whole-residues': true });
 
 
 
