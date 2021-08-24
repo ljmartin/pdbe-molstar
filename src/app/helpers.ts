@@ -65,7 +65,8 @@ export type LigandQueryParam = {
     struct_asym_id?: string,
     label_comp_id?: string,
     auth_seq_id?: number,
-    show_all?: boolean
+    show_all?: boolean,
+    rad?: number
 };
 
 export namespace LigandView {
@@ -73,6 +74,14 @@ export namespace LigandView {
         let atomGroupsParams: any = {
             'group-by': MS.core.str.concat([MS.struct.atomProperty.core.operatorName(), MS.struct.atomProperty.macromolecular.residueKey()])
         };
+
+	let rad: number;
+	if(ligandViewParams.rad) {
+		rad = ligandViewParams.rad
+	} else {
+	rad = 1
+	}
+
 
         // Residue Param
         let residueParam: any;
@@ -98,11 +107,14 @@ export namespace LigandView {
             ]);
         
         // Construct surroundings query
-        const surroundings = MS.struct.modifier.includeSurroundings({ 0: core, radius: 5, 'as-whole-residues': true });
+        const surroundings = MS.struct.modifier.includeSurroundings({ 0: core, radius: rad, 'as-whole-residues': false });
+
+
 
         return {
             core,
             surroundings
+
         };
 
     }
@@ -132,7 +144,7 @@ export namespace LigandView {
         ]);
 
         // Construct surroundings query
-        const surroundings = MS.struct.modifier.includeSurroundings({ 0: core, radius: 5, 'as-whole-residues': true });
+        const surroundings = MS.struct.modifier.includeSurroundings({ 0: core, radius: 5, 'as-whole-residues': false });
 
         return {
             core,

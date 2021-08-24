@@ -262,7 +262,8 @@ class PDBeMolstarPlugin {
         if (ligandVis) await this.plugin.builders.structure.representation.addRepresentation(ligandVis, { type: 'ball-and-stick', color: 'element-symbol', colorParams: { carbonByChainId: false }, size: 'uniform', sizeParams: { value: 2.5 } }, { tag: 'ligand-vis' });
 
         const ligandSurr = await this.plugin.builders.structure.tryCreateComponentFromExpression(structure, ligandQuery.surroundings, 'rest', {label: 'Surroundings'});
-        if (ligandSurr) await this.plugin.builders.structure.representation.addRepresentation(ligandSurr, { type: 'ball-and-stick', color: 'element-symbol', colorParams: { carbonByChainId: false }, size: 'uniform', sizeParams: { value: 0.8 } });
+        // if (ligandSurr) await this.plugin.builders.structure.representation.addRepresentation(ligandSurr, { type: 'ball-and-stick', color: 'element-symbol', colorParams: { carbonByChainId: false }, size: 'uniform', sizeParams: { value: 0.8 } });
+	if (ligandSurr) await this.plugin.builders.structure.representation.addRepresentation(ligandSurr, { type: 'spacefill' });
 
         // Focus ligand
         const ligRef = StateSelection.findTagInSubtree(this.plugin.state.data.tree, StateTransform.RootRef, 'ligand-vis');
